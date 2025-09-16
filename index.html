@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSV to Generic Transformer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        textarea { width: 100%; height: 300px; margin-top: 1em; }
+    </style>
+</head>
+<body>
+    <h1>CSV Upload & Transform</h1>
+    <input type="file" id="csvFile" accept=".csv" />
+    <textarea id="output" readonly placeholder="Transformed output will appear here..."></textarea>
+
+    <script src="index.js"></script>
+    <script>
+        document.getElementById('csvFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvContent = e.target.result;
+                // Assumes transformToGeneric is defined in index.js and is globally accessible
+                const transformed = transformToGeneric(csvContent);
+                document.getElementById('output').value = transformed;
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
