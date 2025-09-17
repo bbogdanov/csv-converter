@@ -77,6 +77,26 @@
             text-align: center;
         }
 
+        #downloadBtn {
+            display: block;
+            margin: 1em auto 0 auto;
+            padding: 0.8em 2em;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            background: #6c63ff;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        #downloadBtn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         @media (max-width: 700px) {
             .container {
                 padding: 1em;
@@ -95,6 +115,7 @@
         <label for="csvFile">Choose your CSV file:</label>
         <input type="file" id="csvFile" accept=".csv" />
         <textarea id="output" readonly placeholder="Transformed output will appear here..."></textarea>
+        <a id="downloadBtn" href="#" download="transformed.csv" disabled>Download Transformed CSV</a>
     </div>
 
     <script>
@@ -164,6 +185,13 @@
                 const csvContent = e.target.result;
                 const transformed = transformToGeneric(csvContent);
                 document.getElementById('output').value = transformed;
+
+                // Create downloadable file
+                const blob = new Blob([transformed], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.href = url;
+                downloadBtn.removeAttribute('disabled');
             };
             reader.readAsText(file);
         });
